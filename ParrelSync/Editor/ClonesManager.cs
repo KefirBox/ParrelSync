@@ -78,7 +78,7 @@ namespace ParrelSync
             string cloneProjectPath = null;
 
             // Find available clone suffix id
-            int availableCloneSuffixId = 0;
+            var availableCloneSuffixId = 0;
             for (var i = 0; i < MaxCloneProjectCount; i++)
             {
                 var originalProjectPath = GetCurrentProject().projectPath;
@@ -296,13 +296,19 @@ namespace ParrelSync
 
         public static void SyncPackages(string cloneProjectPath)
         {
-            if (string.IsNullOrEmpty(cloneProjectPath)) return;
+            if (string.IsNullOrEmpty(cloneProjectPath))
+            {
+                return;
+            }
 
-            string sourceProjectPath = GetOriginalProjectPath();
-            if (cloneProjectPath == sourceProjectPath) return;
+            var sourceProjectPath = GetOriginalProjectPath();
+            if (cloneProjectPath == sourceProjectPath)
+            {
+                return;
+            }
 
-            Project sourceProject = new Project(sourceProjectPath);
-            Project cloneProject = new Project(cloneProjectPath);
+            var sourceProject = new Project(sourceProjectPath);
+            var cloneProject = new Project(cloneProjectPath);
 
             FileUtil.ReplaceDirectory(sourceProject.packagesPath, cloneProject.packagesPath);
             Debug.Log("Package Folder Synced (" + sourceProject.packagesPath + " => " + cloneProject.packagesPath + ")");

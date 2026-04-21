@@ -192,8 +192,11 @@ namespace ParrelSync
 
             GUILayout.EndVertical();
 
-            EditorUtility.SetDirty(_settings);
-            AssetDatabase.SaveAssets();
+            if (isDirty)
+            {
+                EditorUtility.SetDirty(_settings);
+                AssetDatabase.SaveAssets();
+            }
         }
 
         // Register the SettingsProvider

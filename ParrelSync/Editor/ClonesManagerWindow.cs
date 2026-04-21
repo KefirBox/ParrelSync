@@ -64,6 +64,7 @@ namespace ParrelSync
                 GUILayout.EndHorizontal();
 
                 var argumentFilePath = Path.Combine(ClonesManager.GetCurrentProjectPath(), ClonesManager.ArgumentFileName);
+
                 //Need to be careful with file reading / writing since it will effect the deletion of
                 //  the clone project(The directory won't be fully deleted if there's still file inside being read or write).
                 //The argument file will be deleted first at the beginning of the project deletion process
@@ -88,6 +89,8 @@ namespace ParrelSync
                 return;
             }
 
+            var projectSettings = ParrelSyncProjectSettings.GetSerializedSettings();
+
             // If it is an original project...
             if (isCloneCreated)
             {
@@ -100,10 +103,9 @@ namespace ParrelSync
                 for (var i = 0; i < cloneProjectsPath.Count; i++)
                 {
                     GUILayout.BeginVertical("GroupBox");
+
                     var cloneProjectPath = cloneProjectsPath[i];
-
                     var isOpenInAnotherInstance = ClonesManager.IsCloneProjectRunning(cloneProjectPath);
-
                     if (isOpenInAnotherInstance)
                     {
                         EditorGUILayout.LabelField("Clone " + i + " (Running)", EditorStyles.boldLabel);
@@ -132,6 +134,7 @@ namespace ParrelSync
                     GUILayout.EndHorizontal();
 
                     var argumentFilePath = Path.Combine(cloneProjectPath, ClonesManager.ArgumentFileName);
+
                     //Need to be careful with file reading/writing since it will effect the deletion of
                     //the clone project(The directory won't be fully deleted if there's still file inside being read or write).
                     //The argument file will be deleted first at the beginning of the project deletion process
@@ -168,18 +171,22 @@ namespace ParrelSync
                     if (GUILayout.Button("Delete"))
                     {
                         var delete = EditorUtility.DisplayDialog(
-                                "Delete the clone?",
-                                "Are you sure you want to delete the clone project '" + ClonesManager.GetCurrentProject().name + "_clone'?",
-                                "Delete",
-                                "Cancel");
-                            if (delete)
-                            {
-                                ClonesManager.DeleteClone(cloneProjectPath);
-                            }
-                        }
-                        GUILayout.EndHorizontal();
-                        EditorGUI.EndDisabledGroup();
+                            "Delete the clone?",
+                            "Are you sure you want to delete the clone project '" + ClonesManager.GetCurrentProject().name + "_clone'?",
+                            "Delete",
+                            "Cancel");
 
+                        if (delete)
+                        {
+                            ClonesManager.DeleteClone(cloneProjectPath);
+                        }
+                    }
+
+                    GUILayout.EndHorizontal();
+                    EditorGUI.EndDisabledGroup();
+
+                    if (projectSettings.CopyPackagesFolders)
+                    {
                         GUILayout.BeginHorizontal();
                         if (GUILayout.Button("Sync Packages Folder"))
                         {
@@ -187,6 +194,8 @@ namespace ParrelSync
                         }
 
                         GUILayout.EndHorizontal();
+                    }
+
                     GUILayout.EndVertical();
                 }
 
