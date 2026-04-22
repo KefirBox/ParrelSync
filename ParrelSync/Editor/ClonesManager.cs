@@ -603,7 +603,6 @@ namespace ParrelSync
                     || ignoredFiles.Contains(fileName)
                     || ignoredExtensions.Contains(file.Extension))
                 {
-                    // Debug.Log($"Skip file: {file.FullName}");
                     continue;
                 }
 
@@ -619,80 +618,8 @@ namespace ParrelSync
 
                 if (ignoredExtension)
                 {
-                    // Debug.Log($"Skip file: {file.FullName}");
                     continue;
                 }
-
-                // if (file.Extension != ".meta"
-                //     && file.Extension != ".cs"
-                //     && file.Extension != ".dll"
-                //     && file.Extension != ".txt"
-                //     && file.Extension != ".rsp"
-                //     && file.Extension != ".rsp2"
-                //     && file.Extension != ".mvfrm"
-                //     && file.Extension != ".asset"
-                //     && file.Extension != ".assets"
-                //     && file.Extension != ".json"
-                //     && file.Extension != ".bin"
-                //     && file.Extension != ".gbc"
-                //     && file.Extension != ".a"
-                //     && file.Extension != ".o"
-                //     && file.Extension != ".lib"
-                //     && file.Extension != ".exe"
-                //     && file.Extension != ".api"
-                //     && file.Extension != ".guiskin"
-                //     && file.Extension != ".info"
-                //     && file.Extension != ".cpp"
-                //     && file.Extension != ".c"
-                //     && file.Extension != ".dag"
-                //     && file.Extension != ".traceevents"
-                //     && file.Extension != ".map"
-                //     && file.Extension != ".db"
-                //     && file.Extension != ".bhc"
-                //     && file.Extension != ".bundle"
-                //     && file.Extension != ".plist"
-                //     && file.Extension != ".png"
-                //     && file.Extension != ".jpg"
-                //     && file.Extension != ".tif"
-                //     && file.Extension != ".mat"
-                //     && file.Extension != ".prefab"
-                //     && file.Extension != ".shader"
-                //     && file.Extension != ".hlsl"
-                //     && file.Extension != ".asmdef"
-                //     && file.Extension != ".asmref"
-                //     && file.Extension != ".so"
-                //     && file.Extension != ".dylib"
-                //     && file.Extension != ".shadergraph"
-                //     && file.Extension != ".shadersubgraph"
-                //     && file.Extension != ".fbx"
-                //     && file.Extension != ".lighting"
-                //     && file.Extension != ".ttf"
-                //     && file.Extension != ".FBX"
-                //     && file.Extension != ".yml"
-                //     && file.Extension != ".yaml"
-                //     && file.Extension != ".wav"
-                //     && file.Extension != ".resS"
-                //     && file.Extension != ".pref"
-                //     && file.Extension != ".xml"
-                //     && file.Extension != ".tga"
-                //     && file.Extension != ".template"
-                //     && file.Extension != ".uxml"
-                //     && file.Extension != ".mesh"
-                //     && file.Extension != ".psd"
-                //     && file.Extension != ".mm"
-                //     && file.Extension != ".cginc"
-                //     && file.Extension != ".vfx"
-                //     && file.Extension != ".vfxblock"
-                //     && file.Extension != ".vfxoperator"
-                //     && file.Extension != ".tt"
-                //     && file.Extension != ".compute"
-                //     && file.Extension != ".config"
-                //     && file.Extension != ".csv"
-                //     && file.Extension != ".uss"
-                //     && file.Extension != ".pdb")
-                // {
-                //     Debug.Log($"DEV.File: {file.FullName}");
-                // }
 
                 try
                 {
@@ -733,7 +660,6 @@ namespace ParrelSync
                         && sourceNestedDir.Parent.FullName == $"{projectPath}/Library"
                         && ignoredLibraryFolders.Contains(folderName)))
                 {
-                    // Debug.Log($"Skip folder: {sourceNestedDir.FullName}");
                     continue;
                 }
 

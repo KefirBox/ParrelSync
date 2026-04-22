@@ -12,17 +12,10 @@ namespace ParrelSync
         private const string ParrelSyncScriptableObjectsDirectory = "Assets/Plugins/ParrelSync/ScriptableObjects";
         private const string ParrelSyncSettingsPath = ParrelSyncScriptableObjectsDirectory + "/" + nameof(ParrelSyncProjectSettings) + ".asset";
 
-        // [HideInInspector]
-        [SerializeField] private bool assetModPref = true;
-
-        // [HideInInspector]
-        [SerializeField] private bool copyPackagesFolders;
-
-        // [HideInInspector]
-        [SerializeField] private bool alsoCheckUnityLockFileStaPref = true;
-
-        // [HideInInspector]
-        [SerializeField] private List<string> optionalSymbolicLinkFolders;
+        [SerializeField, HideInInspector] private bool assetModPref = true;
+        [SerializeField, HideInInspector] private bool copyPackagesFolders;
+        [SerializeField, HideInInspector] private bool alsoCheckUnityLockFileStaPref = true;
+        [SerializeField, HideInInspector] private List<string> optionalSymbolicLinkFolders;
 
         public List<string> OptionalSymbolicLinkFolders
             => optionalSymbolicLinkFolders;
