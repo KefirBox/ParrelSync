@@ -93,7 +93,7 @@ namespace ParrelSync
 
         private void ParsePath(string path)
         {
-            //Unity's Application functions return the Assets path in the Editor. 
+            //Unity's Application functions return the Assets path in the Editor.
             projectPath = path;
 
             //pop off the last part of the path for the project name, keep the rest for the root path

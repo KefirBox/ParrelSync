@@ -133,9 +133,6 @@ namespace ParrelSync
                 LinkFolders(sourceProject.packagesPath, cloneProject.packagesPath);
             }
 
-            // TODO skip copy ~ folders/files?, Tests
-            // Library/*.pdf, Library/Search
-
             // Copy Folders
             Debug.Log("Library copy: " + cloneProject.libraryPath);
             CopyDirectoryWithProgressBar(
@@ -414,7 +411,7 @@ namespace ParrelSync
         /// </summary>
         /// <returns></returns>
         public static string GetCurrentProjectPath()
-            => Application.dataPath.Replace("/Assets", "");
+            => Path.GetDirectoryName(Application.dataPath);
 
         /// <summary>
         /// Return a project object that describes all the paths we need to clone it.
@@ -546,18 +543,160 @@ namespace ParrelSync
                 Directory.CreateDirectory(destination.FullName);
             }
 
+            var ignoredFolders = new HashSet<string>
+            {
+                "BuildReports",
+                "Demo",
+                "Documentation",
+                "Examples",
+                "Samples",
+                "Tests",
+            };
+
+            var ignoredLibraryFolders = new HashSet<string>
+            {
+                "Artifacts",
+                "Bee",
+                "BuildPlayerData",
+                "BurstCache",
+                "PlayerDataCache",
+                "Search",
+                "ShaderCache",
+                "SplashScreenCache",
+                "StateCache",
+                "TempArtifacts",
+                "VP",
+            };
+
+            var ignoredFiles = new HashSet<string>
+            {
+                ".DS_Store",
+                "Thumbs.db",
+                "Desktop.ini",
+                "Documentation.meta",
+                "Samples.meta",
+                "Examples.meta",
+                "Tests.meta",
+            };
+
+            var ignoredExtensions = new HashSet<string>
+            {
+                ".md",
+                ".log",
+                ".pdf",
+                ".backup",
+                ".pid",
+                ".zip",
+                ".tar",
+                ".tar.gz",
+                ".csproj",
+                ".unitypackage",
+                ".buildreport",
+            };
+
             // Copy all files from the source.
             foreach (var file in source.GetFiles())
             {
                 // Ensure file exists before continuing.
-                if (!file.Exists)
+                var fileName = file.Name;
+                if (!file.Exists
+                    || ignoredFiles.Contains(fileName)
+                    || ignoredExtensions.Contains(file.Extension))
                 {
+                    // Debug.Log($"Skip file: {file.FullName}");
                     continue;
                 }
 
+                var ignoredExtension = false;
+                foreach (var extension in ignoredExtensions)
+                {
+                    if (file.FullName.EndsWith($"{extension}.meta", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ignoredExtension = true;
+                        break;
+                    }
+                }
+
+                if (ignoredExtension)
+                {
+                    // Debug.Log($"Skip file: {file.FullName}");
+                    continue;
+                }
+
+                // if (file.Extension != ".meta"
+                //     && file.Extension != ".cs"
+                //     && file.Extension != ".dll"
+                //     && file.Extension != ".txt"
+                //     && file.Extension != ".rsp"
+                //     && file.Extension != ".rsp2"
+                //     && file.Extension != ".mvfrm"
+                //     && file.Extension != ".asset"
+                //     && file.Extension != ".assets"
+                //     && file.Extension != ".json"
+                //     && file.Extension != ".bin"
+                //     && file.Extension != ".gbc"
+                //     && file.Extension != ".a"
+                //     && file.Extension != ".o"
+                //     && file.Extension != ".lib"
+                //     && file.Extension != ".exe"
+                //     && file.Extension != ".api"
+                //     && file.Extension != ".guiskin"
+                //     && file.Extension != ".info"
+                //     && file.Extension != ".cpp"
+                //     && file.Extension != ".c"
+                //     && file.Extension != ".dag"
+                //     && file.Extension != ".traceevents"
+                //     && file.Extension != ".map"
+                //     && file.Extension != ".db"
+                //     && file.Extension != ".bhc"
+                //     && file.Extension != ".bundle"
+                //     && file.Extension != ".plist"
+                //     && file.Extension != ".png"
+                //     && file.Extension != ".jpg"
+                //     && file.Extension != ".tif"
+                //     && file.Extension != ".mat"
+                //     && file.Extension != ".prefab"
+                //     && file.Extension != ".shader"
+                //     && file.Extension != ".hlsl"
+                //     && file.Extension != ".asmdef"
+                //     && file.Extension != ".asmref"
+                //     && file.Extension != ".so"
+                //     && file.Extension != ".dylib"
+                //     && file.Extension != ".shadergraph"
+                //     && file.Extension != ".shadersubgraph"
+                //     && file.Extension != ".fbx"
+                //     && file.Extension != ".lighting"
+                //     && file.Extension != ".ttf"
+                //     && file.Extension != ".FBX"
+                //     && file.Extension != ".yml"
+                //     && file.Extension != ".yaml"
+                //     && file.Extension != ".wav"
+                //     && file.Extension != ".resS"
+                //     && file.Extension != ".pref"
+                //     && file.Extension != ".xml"
+                //     && file.Extension != ".tga"
+                //     && file.Extension != ".template"
+                //     && file.Extension != ".uxml"
+                //     && file.Extension != ".mesh"
+                //     && file.Extension != ".psd"
+                //     && file.Extension != ".mm"
+                //     && file.Extension != ".cginc"
+                //     && file.Extension != ".vfx"
+                //     && file.Extension != ".vfxblock"
+                //     && file.Extension != ".vfxoperator"
+                //     && file.Extension != ".tt"
+                //     && file.Extension != ".compute"
+                //     && file.Extension != ".config"
+                //     && file.Extension != ".csv"
+                //     && file.Extension != ".uss"
+                //     && file.Extension != ".pdb")
+                // {
+                //     Debug.Log($"DEV.File: {file.FullName}");
+                // }
+
                 try
                 {
-                    file.CopyTo(Path.Combine(destination.ToString(), file.Name), true);
+                    file.CopyTo(Path.Combine(destination.ToString(), fileName), true);
                 }
                 catch (IOException)
                 {
@@ -572,7 +711,7 @@ namespace ParrelSync
                 var progress = copiedBytes / (float)totalBytes;
                 var cancelCopy = EditorUtility.DisplayCancelableProgressBar(
                     progressBarPrefix + "Copying '" + source.FullName + "' to '" + destination.FullName + "'...",
-                    "(" + (progress * 100f).ToString("F2") + "%) Copying file '" + file.Name + "'...",
+                    "(" + (progress * 100f).ToString("F2") + "%) Copying file '" + fileName + "'...",
                     progress);
 
                 if (cancelCopy)
@@ -581,10 +720,24 @@ namespace ParrelSync
                 }
             }
 
+            // TODO sync addressables build folder
+
+            var projectPath = GetCurrentProjectPath();
             // Copy all nested directories from the source.
             foreach (var sourceNestedDir in source.GetDirectories())
             {
-                var nextDestinationNestedDir = destination.CreateSubdirectory(sourceNestedDir.Name);
+                var folderName = sourceNestedDir.Name;
+                if (folderName.EndsWith('~')
+                    || ignoredFolders.Contains(folderName)
+                    || (sourceNestedDir.Parent is { Name: "Library" }
+                        && sourceNestedDir.Parent.FullName == $"{projectPath}/Library"
+                        && ignoredLibraryFolders.Contains(folderName)))
+                {
+                    // Debug.Log($"Skip folder: {sourceNestedDir.FullName}");
+                    continue;
+                }
+
+                var nextDestinationNestedDir = destination.CreateSubdirectory(folderName);
                 CopyDirectoryWithProgressBarRecursive(
                     sourceNestedDir, nextDestinationNestedDir,
                     ref totalBytes, ref copiedBytes, progressBarPrefix);
@@ -612,7 +765,7 @@ namespace ParrelSync
             long directoriesSize = 0;
             if (includeNested)
             {
-                IEnumerable<DirectoryInfo> nestedDirectories = directory.GetDirectories();
+                var nestedDirectories = directory.GetDirectories();
                 foreach (var nestedDir in nestedDirectories)
                 {
                     directoriesSize += GetDirectorySize(nestedDir, true, progressBarPrefix);

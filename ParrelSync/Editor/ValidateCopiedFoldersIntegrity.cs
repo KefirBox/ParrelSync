@@ -83,7 +83,7 @@ namespace ParrelSync
                 }
             }
 
-            return BitConverter.ToString(md5.Hash).Replace("-", "").ToLower();
+            return BitConverter.ToString(md5.Hash).ToLower();
         }
     }
 }
