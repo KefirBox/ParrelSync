@@ -1,10 +1,28 @@
 {
-    "name": "com.veriorpies.parrelsync",
-    "displayName": "ParrelSync",
-    "version": "1.5.2",
-    "unity": "2018.4",
-    "description": "ParrelSync is a Unity editor extension that allows users to test multiplayer gameplay without building the project by having another Unity editor window opened and mirror the changes from the original project.",
-    "license": "MIT",
-	"keywords": [ "Networking", "Utils", "Editor", "Extensions" ],
-    "dependencies": {}
+  "name": "com.kefirbox.parrelsync",
+  "version": "1.6.0",
+  "displayName": "ParrelSync",
+  "unity": "2019.3",
+  "description": "ParrelSync is a Unity editor extension that allows users to test multiplayer gameplay without building the project by having another Unity editor window opened and mirror the changes from the original project.\nForked from: https://github.com/VeriorPies/ParrelSync",
+  "documentationUrl": "https://github.com/KefirBox/ParrelSync",
+  "changelogUrl": "https://github.com/KefirBox/ParrelSync/releases",
+  "hideInEditor": false,
+  "dependencies": {},
+  "keywords": [
+    "Networking",
+    "Utils",
+    "Editor",
+    "Extensions"
+  ],
+  "category": "Localization",
+  "repository": {
+    "url": "https://github.com/KefirBox/ParrelSync.git",
+    "type": "git"
+  },
+  "licensesUrl": "https://github.com/KefirBox/ParrelSync/blob/main/LICENSE.md",
+  "license": "MIT",
+  "author": {
+    "name": "KefirBox Team",
+    "url": "https://github.com/KefirBox"
+  }
 }
