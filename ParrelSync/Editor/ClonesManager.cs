@@ -547,7 +547,6 @@ namespace ParrelSync
             {
                 "BuildReports",
                 "Demo",
-                "Documentation",
                 "Examples",
                 "Samples",
                 "Tests",
@@ -573,7 +572,6 @@ namespace ParrelSync
                 ".DS_Store",
                 "Thumbs.db",
                 "Desktop.ini",
-                "Documentation.meta",
                 "Samples.meta",
                 "Examples.meta",
                 "Tests.meta",
