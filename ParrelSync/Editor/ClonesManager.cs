@@ -599,7 +599,7 @@ namespace ParrelSync
                 var fileName = file.Name;
                 if (!file.Exists
                     || ignoredFiles.Contains(fileName)
-                    || ignoredExtensions.Contains(file.Extension))
+                    || ignoredExtensions.Contains(file.Extension.ToLower()))
                 {
                     continue;
                 }
@@ -607,7 +607,7 @@ namespace ParrelSync
                 var ignoredExtension = false;
                 foreach (var extension in ignoredExtensions)
                 {
-                    if (file.FullName.EndsWith($"{extension}.meta", StringComparison.OrdinalIgnoreCase))
+                    if (file.FullName.EndsWith($"{extension}.meta", StringComparison.InvariantCultureIgnoreCase))
                     {
                         ignoredExtension = true;
                         break;
